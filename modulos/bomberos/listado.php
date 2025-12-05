@@ -40,12 +40,13 @@ try {
     } else {
         $reportes = $repo->getAll();
     }
-
+    
     // Verificar que $reportes es un array
     if (!is_array($reportes)) {
         error_log("Error: reportes no es un array. Tipo: " . gettype($reportes));
         $reportes = [];
     }
+    
 } catch (Exception $e) {
     error_log("Error al obtener reportes: " . $e->getMessage());
     $reportes = [];
@@ -145,75 +146,75 @@ include '../../inclusiones/encabezado.php';
                                             <td><?php echo isset($reporte['NombreVictima']) ? htmlspecialchars($reporte['NombreVictima']) : 'N/A'; ?></td>
                                             <td>
                                                 <?php if (isset($reporte['Evento'])): ?>
-                                                    <span class="badge bg-<?php
-                                                                            switch ($reporte['Evento']) {
-                                                                                case 'Incendio':
-                                                                                    echo 'danger';
-                                                                                    break;
-                                                                                case 'Fuga gas':
-                                                                                    echo 'warning';
-                                                                                    break;
-                                                                                case 'Rescate':
-                                                                                    echo 'success';
-                                                                                    break;
-                                                                                default:
-                                                                                    echo 'info';
-                                                                            }
-                                                                            ?>">
-                                                        <?php echo htmlspecialchars($reporte['Evento']); ?>
-                                                    </span>
+                                                <span class="badge bg-<?php
+                                                                        switch ($reporte['Evento']) {
+                                                                            case 'Incendio':
+                                                                                echo 'danger';
+                                                                                break;
+                                                                            case 'Fuga gas':
+                                                                                echo 'warning';
+                                                                                break;
+                                                                            case 'Rescate':
+                                                                                echo 'success';
+                                                                                break;
+                                                                            default:
+                                                                                echo 'info';
+                                                                        }
+                                                                        ?>">
+                                                    <?php echo htmlspecialchars($reporte['Evento']); ?>
+                                                </span>
                                                 <?php else: ?>
-                                                    <span class="badge bg-secondary">N/A</span>
+                                                <span class="badge bg-secondary">N/A</span>
                                                 <?php endif; ?>
                                             </td>
                                             <td><?php echo isset($reporte['LugarEvento']) ? htmlspecialchars(substr($reporte['LugarEvento'], 0, 30)) . '...' : 'N/A'; ?></td>
                                             <td><?php echo isset($reporte['NumeroTelEmergencia']) ? htmlspecialchars($reporte['NumeroTelEmergencia']) : 'N/A'; ?></td>
                                             <td>
                                                 <?php if (isset($reporte['Estatus'])): ?>
-                                                    <span class="badge bg-<?php
-                                                                            switch ($reporte['Estatus']) {
-                                                                                case 'Pendiente':
-                                                                                    echo 'warning';
-                                                                                    break;
-                                                                                case 'En proceso':
-                                                                                    echo 'info';
-                                                                                    break;
-                                                                                case 'Atendido':
-                                                                                    echo 'success';
-                                                                                    break;
-                                                                                default:
-                                                                                    echo 'secondary';
-                                                                            }
-                                                                            ?>">
-                                                        <?php echo $reporte['Estatus']; ?>
-                                                    </span>
+                                                <span class="badge bg-<?php
+                                                                        switch ($reporte['Estatus']) {
+                                                                            case 'Pendiente':
+                                                                                echo 'warning';
+                                                                                break;
+                                                                            case 'En proceso':
+                                                                                echo 'info';
+                                                                                break;
+                                                                            case 'Atendido':
+                                                                                echo 'success';
+                                                                                break;
+                                                                            default:
+                                                                                echo 'secondary';
+                                                                        }
+                                                                        ?>">
+                                                    <?php echo $reporte['Estatus']; ?>
+                                                </span>
                                                 <?php else: ?>
-                                                    <span class="badge bg-secondary">N/A</span>
+                                                <span class="badge bg-secondary">N/A</span>
                                                 <?php endif; ?>
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <?php if (isset($reporte['Id'])): ?>
-                                                        <button type="button" class="btn btn-sm btn-info ver-detalle"
-                                                            data-id="<?php echo $reporte['Id']; ?>"
-                                                            title="Ver Detalles">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-sm btn-warning editar-estatus"
-                                                            data-id="<?php echo $reporte['Id']; ?>"
-                                                            data-victima="<?php echo htmlspecialchars($reporte['NombreVictima']); ?>"
-                                                            data-evento="<?php echo htmlspecialchars($reporte['Evento']); ?>"
-                                                            data-estatus="<?php echo $reporte['Estatus']; ?>"
-                                                            title="Editar Estado">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
+                                                    <button type="button" class="btn btn-sm btn-info ver-detalle"
+                                                        data-id="<?php echo $reporte['Id']; ?>"
+                                                        title="Ver Detalles">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-warning editar-estatus"
+                                                        data-id="<?php echo $reporte['Id']; ?>"
+                                                        data-victima="<?php echo htmlspecialchars($reporte['NombreVictima']); ?>"
+                                                        data-evento="<?php echo htmlspecialchars($reporte['Evento']); ?>"
+                                                        data-estatus="<?php echo $reporte['Estatus']; ?>"
+                                                        title="Editar Estado">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
                                                     <?php else: ?>
-                                                        <button type="button" class="btn btn-sm btn-info disabled">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-sm btn-warning disabled">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
+                                                    <button type="button" class="btn btn-sm btn-info disabled">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-warning disabled">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
                                                     <?php endif; ?>
                                                 </div>
                                             </td>
@@ -279,22 +280,22 @@ include '../../inclusiones/encabezado.php';
             <form id="form-editar-estatus" method="POST">
                 <div class="modal-body">
                     <input type="hidden" id="editar-id" name="id">
-
+                    
                     <div class="mb-3">
                         <label class="form-label fw-bold">Número de Reporte:</label>
                         <p class="form-control-plaintext" id="editar-numero">#</p>
                     </div>
-
+                    
                     <div class="mb-3">
                         <label class="form-label fw-bold">Víctima:</label>
                         <p class="form-control-plaintext" id="editar-victima"></p>
                     </div>
-
+                    
                     <div class="mb-3">
                         <label class="form-label fw-bold">Tipo de Evento:</label>
                         <p class="form-control-plaintext" id="editar-evento"></p>
                     </div>
-
+                    
                     <div class="mb-3">
                         <label for="estatus" class="form-label fw-bold">Estado Actual:</label>
                         <select class="form-select" id="estatus" name="estatus" required>
@@ -305,7 +306,7 @@ include '../../inclusiones/encabezado.php';
                         </select>
                         <div class="form-text">Seleccione el nuevo estado del reporte.</div>
                     </div>
-
+                    
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
                         Solo puede modificar el estado del reporte. Los demás datos son de solo lectura.
@@ -326,165 +327,165 @@ include '../../inclusiones/encabezado.php';
 
 <!-- JavaScript para los modales -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Verificar si Bootstrap está disponible
-        if (typeof bootstrap === 'undefined') {
-            console.error('Bootstrap no está cargado');
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar si Bootstrap está disponible
+    if (typeof bootstrap === 'undefined') {
+        console.error('Bootstrap no está cargado');
+        return;
+    }
+    
+    // ===== MODAL DE DETALLES =====
+    // Manejar clic en botones "Ver Detalles"
+    document.querySelectorAll('.ver-detalle').forEach(button => {
+        button.addEventListener('click', function() {
+            const reportId = this.getAttribute('data-id');
+            cargarDetallesReporte(reportId);
+        });
+    });
+
+    function cargarDetallesReporte(id) {
+        if (!id || id === 'N/A') {
+            alert('ID de reporte no válido');
             return;
         }
-
-        // ===== MODAL DE DETALLES =====
-        // Manejar clic en botones "Ver Detalles"
-        document.querySelectorAll('.ver-detalle').forEach(button => {
-            button.addEventListener('click', function() {
-                const reportId = this.getAttribute('data-id');
-                cargarDetallesReporte(reportId);
-            });
-        });
-
-        function cargarDetallesReporte(id) {
-            if (!id || id === 'N/A') {
-                alert('ID de reporte no válido');
-                return;
-            }
-
-            // Mostrar modal con spinner
-            const modalElement = document.getElementById('detalleModal');
-            if (!modalElement) {
-                alert('No se pudo encontrar el modal');
-                return;
-            }
-
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-
-            // Actualizar título del modal
-            document.getElementById('detalleModalLabel').innerHTML =
-                `<i class="fas fa-file-alt me-2"></i>Detalles del Reporte #${id}`;
-
-            // Cargar contenido via AJAX
-            fetch(`detalles_ajax.php?id=${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la respuesta del servidor: ' + response.status);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    document.getElementById('modal-detalle-content').innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('modal-detalle-content').innerHTML = `
+        
+        // Mostrar modal con spinner
+        const modalElement = document.getElementById('detalleModal');
+        if (!modalElement) {
+            alert('No se pudo encontrar el modal');
+            return;
+        }
+        
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+        
+        // Actualizar título del modal
+        document.getElementById('detalleModalLabel').innerHTML = 
+            `<i class="fas fa-file-alt me-2"></i>Detalles del Reporte #${id}`;
+        
+        // Cargar contenido via AJAX
+        fetch(`detalles_ajax.php?id=${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('modal-detalle-content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('modal-detalle-content').innerHTML = `
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         Error al cargar los detalles: ${error.message}
                     </div>
                 `;
-                });
-        }
-
-        // ===== MODAL DE EDICIÓN =====
-        // Manejar clic en botones "Editar Estado"
-        document.querySelectorAll('.editar-estatus').forEach(button => {
-            button.addEventListener('click', function() {
-                const reportId = this.getAttribute('data-id');
-                const victima = this.getAttribute('data-victima');
-                const evento = this.getAttribute('data-evento');
-                const estatus = this.getAttribute('data-estatus');
-
-                abrirModalEdicion(reportId, victima, evento, estatus);
             });
+    }
+    
+    // ===== MODAL DE EDICIÓN =====
+    // Manejar clic en botones "Editar Estado"
+    document.querySelectorAll('.editar-estatus').forEach(button => {
+        button.addEventListener('click', function() {
+            const reportId = this.getAttribute('data-id');
+            const victima = this.getAttribute('data-victima');
+            const evento = this.getAttribute('data-evento');
+            const estatus = this.getAttribute('data-estatus');
+            
+            abrirModalEdicion(reportId, victima, evento, estatus);
         });
+    });
 
-        function abrirModalEdicion(id, victima, evento, estatusActual) {
-            // Llenar los campos del modal
-            document.getElementById('editar-id').value = id;
-            document.getElementById('editar-numero').textContent = `#${id}`;
-            document.getElementById('editar-victima').textContent = victima;
-            document.getElementById('editar-evento').textContent = evento;
-            document.getElementById('estatus').value = estatusActual;
+    function abrirModalEdicion(id, victima, evento, estatusActual) {
+        // Llenar los campos del modal
+        document.getElementById('editar-id').value = id;
+        document.getElementById('editar-numero').textContent = `#${id}`;
+        document.getElementById('editar-victima').textContent = victima;
+        document.getElementById('editar-evento').textContent = evento;
+        document.getElementById('estatus').value = estatusActual;
+        
+        // Actualizar título
+        document.getElementById('editarModalLabel').innerHTML = 
+            `<i class="fas fa-edit me-2"></i>Actualizar Estado del Reporte #${id}`;
+        
+        // Mostrar modal
+        const modal = new bootstrap.Modal(document.getElementById('editarModal'));
+        modal.show();
+    }
 
-            // Actualizar título
-            document.getElementById('editarModalLabel').innerHTML =
-                `<i class="fas fa-edit me-2"></i>Actualizar Estado del Reporte #${id}`;
-
-            // Mostrar modal
-            const modal = new bootstrap.Modal(document.getElementById('editarModal'));
-            modal.show();
+    // Manejar envío del formulario de edición
+    document.getElementById('form-editar-estatus').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const id = formData.get('id');
+        const nuevoEstatus = formData.get('estatus');
+        
+        if (!id || !nuevoEstatus) {
+            alert('Por favor complete todos los campos');
+            return;
         }
-
-        // Manejar envío del formulario de edición
-        document.getElementById('form-editar-estatus').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            const id = formData.get('id');
-            const nuevoEstatus = formData.get('estatus');
-
-            if (!id || !nuevoEstatus) {
-                alert('Por favor complete todos los campos');
-                return;
+        
+        // Mostrar indicador de carga
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Actualizando...';
+        submitBtn.disabled = true;
+        
+        // Enviar datos via AJAX
+        fetch('actualizar_estatus.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor: ' + response.status);
             }
-
-            // Mostrar indicador de carga
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Actualizando...';
-            submitBtn.disabled = true;
-
-            // Enviar datos via AJAX
-            fetch('actualizar_estatus.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la respuesta del servidor: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Mostrar mensaje de éxito
-                        alert(data.message || 'Estado actualizado correctamente');
-
-                        // Cerrar modal
-                        bootstrap.Modal.getInstance(document.getElementById('editarModal')).hide();
-
-                        // Recargar la página para ver los cambios
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
-
-                    } else {
-                        alert(data.message || 'Error al actualizar el estado');
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error de conexión. Por favor intente nuevamente.');
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                });
-        });
-
-        // ===== FUNCIONALIDADES ADICIONALES =====
-        // Cerrar modales al presionar ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modals = document.querySelectorAll('.modal.show');
-                modals.forEach(modal => {
-                    bootstrap.Modal.getInstance(modal).hide();
-                });
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Mostrar mensaje de éxito
+                alert(data.message || 'Estado actualizado correctamente');
+                
+                // Cerrar modal
+                bootstrap.Modal.getInstance(document.getElementById('editarModal')).hide();
+                
+                // Recargar la página para ver los cambios
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+                
+            } else {
+                alert(data.message || 'Error al actualizar el estado');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión. Por favor intente nuevamente.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
         });
-
-        // Limpiar contenido del modal cuando se cierra
-        document.getElementById('detalleModal').addEventListener('hidden.bs.modal', function() {
-            document.getElementById('modal-detalle-content').innerHTML = `
+    });
+    
+    // ===== FUNCIONALIDADES ADICIONALES =====
+    // Cerrar modales al presionar ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modals = document.querySelectorAll('.modal.show');
+            modals.forEach(modal => {
+                bootstrap.Modal.getInstance(modal).hide();
+            });
+        }
+    });
+    
+    // Limpiar contenido del modal cuando se cierra
+    document.getElementById('detalleModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('modal-detalle-content').innerHTML = `
             <div class="text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Cargando...</span>
@@ -492,8 +493,8 @@ include '../../inclusiones/encabezado.php';
                 <p class="mt-2">Cargando detalles...</p>
             </div>
         `;
-        });
     });
+});
 </script>
 
 <?php include '../../inclusiones/pie.php'; ?>

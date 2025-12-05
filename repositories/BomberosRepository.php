@@ -96,4 +96,18 @@ class BomberosRepository extends BaseRepository
         }
         return $items;
     }
+    
+    public function getById($id)
+    {
+        $sql = "SELECT * FROM {$this->tabla} WHERE Id = ?";
+        $stmt = $this->execute($sql, [$id]);
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            return null;
+        }
+
+        return $result->fetch_assoc();
+    }
+
 }

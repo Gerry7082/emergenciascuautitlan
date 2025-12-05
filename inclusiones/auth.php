@@ -5,7 +5,7 @@ session_start();
 function verificarAutenticacion()
 {
     if (!isset($_SESSION['usuario_autenticado']) || $_SESSION['usuario_autenticado'] !== true) {
-        header('Location: ../login.php');
+        header('Location: login.php');
         exit;
     }
 }
@@ -61,3 +61,26 @@ function cerrarSesion()
     header('Location: login.php');
     exit;
 }
+
+// FUNCIÓN NUEVA - IMPORTANTE: Agregar esta función
+function obtenerRutaBase() {
+    // Obtener el script que se está ejecutando actualmente
+    $script_actual = $_SERVER['SCRIPT_NAME'];
+    
+    // Determinar la ruta base según la ubicación del script
+    $niveles = substr_count(dirname($script_actual), '/');
+    
+    // Si estamos en la raíz
+    if ($niveles == 0) {
+        return './';
+    }
+    
+    // Construir la ruta relativa
+    $ruta = '';
+    for ($i = 0; $i < $niveles; $i++) {
+        $ruta .= '../';
+    }
+    
+    return $ruta;
+}
+?>

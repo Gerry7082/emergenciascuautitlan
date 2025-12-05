@@ -1,275 +1,383 @@
 <?php
-require_once 'config.php';
+// inclusiones/encabezado.php
+
+// PREVENIR CARGA MÚLTIPLE
+if (defined('ENCABEZADO_INCLUIDO')) {
+    return;
+}
+define('ENCABEZADO_INCLUIDO', true);
+
+// Incluir archivos necesarios
+require_once __DIR__ . '/auth.php';
+
+// Verificar autenticación
+verificarAutenticacion();
+
+// Obtener información del usuario
+$usuario_actual = obtenerUsuarioActual();
+
+// Determinar página activa
+$pagina_actual = basename($_SERVER['PHP_SELF']);
+$modulo_actual = '';
+
+if (strpos($_SERVER['PHP_SELF'], 'modulos/admin') !== false) $modulo_actual = 'admin';
+if (strpos($_SERVER['PHP_SELF'], 'modulos/bomberos') !== false) $modulo_actual = 'bomberos';
+if (strpos($_SERVER['PHP_SELF'], 'modulos/medico') !== false) $modulo_actual = 'medico';
+if (strpos($_SERVER['PHP_SELF'], 'modulos/policia') !== false) $modulo_actual = 'policia';
+
+// Obtener nombre corto del usuario
+$nombre_corto = explode(',', $usuario_actual['nombre_completo'])[0];
+$nombre_corto = htmlspecialchars(trim($nombre_corto));
+
+// Calcular la ruta correcta para logout
+$ruta_logout = dirname(dirname($_SERVER['PHP_SELF']));
+if ($ruta_logout == '/') {
+    $ruta_logout = '';
+}
 
 $ruta_base = obtenerRutaBase();
-$uri_actual = $_SERVER['REQUEST_URI'];
-
-function generar_encabezado($page_title, $ruta_base, $uri_actual) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?> | Emergencia Cuautitlán</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Sistema de Emergencias Cuautitlán</title>
     
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery (opcional pero útil) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- En la sección HEAD, reemplaza la línea del CSS -->
+	<link rel="stylesheet" href="<?php echo obtenerRutaBase(); ?>css/estilo.css">
+    
+    <!-- ESTILOS INLINE -->
     <style>
-            body {
+        /* ESTILOS GLOBALES */
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .main-header {
-            width: 100%;
-            position: sticky; 
-            top: 0;
-            z-index: 1000;
-            background-color: #004d99;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-        .navbar {
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between; 
+            flex-direction: column;
+        }
+        
+        /* HEADER */
+        .emergencias-header {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            max-width: 1200px; 
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
         }
-        .navbar-brand .logo {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
+        
+        .header-logo {
             display: flex;
             align-items: center;
+            gap: 15px;
+            color: white;
+            text-decoration: none;
         }
-        .navbar-brand .logo i {
-            margin-right: 10px;
-            color: #ff3333; 
+        
+        .header-logo:hover {
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            transition: transform 0.3s;
         }
-
-        .navbar-info {
-            color: #ffffff; 
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: #ffd700;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.6rem;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .logo-text .subtitle {
             font-size: 0.9rem;
-            margin-left: auto; 
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        /* USUARIO */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-info {
             text-align: right;
         }
-        #datetime-container {
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .user-details {
             display: flex;
-            flex-direction: column; 
-            align-items: flex-end; 
-            line-height: 1.2;
-            padding: 2px 0;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            margin-top: 3px;
         }
-        .date-part {
-            font-weight: normal;
-            font-size: 0.9rem;
-            color: #cccccc; 
+        
+        .user-role-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
         }
-        .time-part {
-            font-weight: bold;
-            font-size: 1.2rem; 
-            color: #ffffff; 
+        
+        .user-time {
+            opacity: 0.9;
         }
-        .date-part i, .time-part i {
-            margin-right: 5px;
+        
+        /* BOTÓN LOGOUT */
+        .btn-logout-header {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
         }
-
-        /* Estilos de Navegación y Resaltado */
-        .navbar-nav {
+        
+        .btn-logout-header:hover {
+            background: #c82333;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* NAVEGACIÓN */
+        .emergencias-nav {
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            padding: 12px 0;
             list-style: none;
             margin: 0;
-            padding: 0;
-            display: flex; 
-            align-items: center;
-            margin-left: 20px; 
-        }
-        .nav-item {
-            margin-left: 15px;
-        }
-        .nav-link {
-            display: block;
-            padding: 8px 12px;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            border-radius: 4px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .nav-link:hover {
-            background-color: #007bff; 
-            color: #ffffff;
-        }
-        .nav-link.active {
-            background-color: #ff3333; 
-            color: #ffffff;
-            font-weight: bold;
-        }
-        .nav-link i {
-            margin-right: 5px;
-        }
-
-        main {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 20px auto;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        }
-        .card-container {
-            display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
         }
-        .card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 15px;
-            flex: 1 1 calc(33% - 20px); 
-            min-width: 280px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #495057;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
         }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        
+        .nav-link:hover {
+            background: #f8f9fa;
+            color: #1a2980;
+            text-decoration: none;
         }
-        .card h3 {
-            margin-top: 0;
-            border-bottom: 2px solid #004d99;
-            padding-bottom: 5px;
-            color: #004d99;
+        
+        .nav-link.active {
+            background: #1a2980;
+            color: white;
         }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #333;
-            color: #fff;
-            margin-top: 30px;
+        
+        /* CONTENIDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            width: 100%;
         }
-
-        @media (max-width: 900px) {
-            .navbar {
-                flex-wrap: wrap; 
+        
+        .container-principal {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .user-section {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .user-info {
+                text-align: left;
+            }
+            
+            .nav-menu {
                 justify-content: center;
             }
-            .navbar-brand, .navbar-info {
-                flex: 1 1 100%; 
+            
+            .nav-link {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-text h1 {
+                font-size: 1.3rem;
+            }
+            
+            .user-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .user-info {
                 text-align: center;
-                margin-bottom: 10px;
             }
-            .navbar-nav {
-                flex-direction: column; 
-                width: 100%;
+            
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
             }
-            .nav-item {
-                margin: 5px 0;
-                width: 100%;
-            }
-            .card {
-                flex: 1 1 100%;
+            
+            .btn-logout-header span {
+                display: none;
             }
         }
     </style>
 </head>
-
 <body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="navbar-brand">
-                <a href="<?php echo $ruta_base; ?>index.php" class="logo">
-                    <i class="fas fa-ambulance"></i> 
-                    Servicios de Emergencia Cuautitlán
+    <!-- HEADER -->
+    <header class="emergencias-header">
+        <div class="header-container">
+            <!-- Logo -->
+            <a href="index.php" class="header-logo">
+                <i class="fas fa-ambulance logo-icon"></i>
+                <div class="logo-text">
+                    <h1>Sistema de Emergencias</h1>
+                    <div class="subtitle">Cuautitlán, Estado de México</div>
+                </div>
+            </a>
+            
+            <!-- Información de usuario y logout -->
+            <div class="user-section">
+                <div class="user-info">
+                    <div class="user-name"><?php echo $nombre_corto; ?></div>
+                    <div class="user-details">
+                        <span class="user-role-badge"><?php echo $usuario_actual['rol']; ?></span>
+                        <span class="user-time"><?php echo date('H:i'); ?></span>
+                    </div>
+                </div>
+                
+                <a href="<?php echo $ruta_base; ?>logout.php" 
+                   class="btn-logout" 
+                   onclick="return confirm('¿Cerrar sesión?');">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Salir
                 </a>
             </div>
-
-            <div class="navbar-info">
-                <div id="datetime-container">
-                    <span class="date-part">
-                        <i class="far fa-calendar-alt"></i> 
-                        <?php echo date('d/m/Y'); ?>
-                    </span>
-                    <span class="time-part">
-                        <i class="far fa-clock"></i> 
-                        <span id="current-time"></span>
-                    </span>
-                </div>
-            </div>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="<?php echo $ruta_base; ?>index.php" class="nav-link 
-                        <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php' && strpos($_SERVER['REQUEST_URI'], 'modulos') === false) ? 'active' : ''; ?>">
-                        Inicio
+        </div>
+    </header>
+    
+    <!-- NAVEGACIÓN -->
+    <nav class="emergencias-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <!-- Inicio -->
+                <li>
+                    <a href="index.php" 
+                       class="nav-link <?php echo ($pagina_actual == 'index.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
                     </a>
                 </li>
                 
-                <li class="nav-item">
-                    <a href="<?php echo $ruta_base; ?>modulos/admin/index.php" class="nav-link 
-                        <?php echo (strpos($uri_actual, 'modulos/admin') !== false) ? 'active' : ''; ?>">
-                        <i class="fas fa-user-shield"></i> Administración
+                <!-- Módulos según permisos -->
+                <?php if (tienePermiso('admin') || tienePermiso('bomberos')): ?>
+                <li>
+                    <a href="modulos/bomberos/index.php" 
+                       class="nav-link <?php echo ($modulo_actual == 'bomberos') ? 'active' : ''; ?>">
+                        <i class="fas fa-fire"></i>
+                        <span>Bomberos</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?php echo $ruta_base; ?>modulos/bomberos/index.php" class="nav-link 
-                        <?php echo (strpos($uri_actual, 'modulos/bomberos') !== false) ? 'active' : ''; ?>">
-                        <i class="fas fa-fire-extinguisher"></i> Bomberos
+                <?php endif; ?>
+
+                <?php if (tienePermiso('admin') || tienePermiso('medico')): ?>
+                <li>
+                    <a href="modulos/medico/index.php" 
+                       class="nav-link <?php echo ($modulo_actual == 'medico') ? 'active' : ''; ?>">
+                        <i class="fas fa-ambulance"></i>
+                        <span>Servicio Médico</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?php echo $ruta_base; ?>modulos/medico/index.php" class="nav-link 
-                        <?php echo (strpos($uri_actual, 'modulos/medico') !== false) ? 'active' : ''; ?>">
-                        <i class="fas fa-user-md"></i> Médico
+                <?php endif; ?>
+
+                <?php if (tienePermiso('admin') || tienePermiso('policia')): ?>
+                <li>
+                    <a href="modulos/policia/index.php" 
+                       class="nav-link <?php echo ($modulo_actual == 'policia') ? 'active' : ''; ?>">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Policía</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?php echo $ruta_base; ?>modulos/policia/index.php" class="nav-link 
-                        <?php echo (strpos($uri_actual, 'modulos/policia') !== false) ? 'active' : ''; ?>">
-                        <i class="fas fa-shield-alt"></i> Policía
+                <?php endif; ?>
+
+                <?php if (tienePermiso('admin')): ?>
+                <li>
+                    <a href="modulos/admin/index.php" 
+                       class="nav-link <?php echo ($modulo_actual == 'admin') ? 'active' : ''; ?>">
+                        <i class="fas fa-cog"></i>
+                        <span>Administración</span>
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
-        </nav>
-    </header>
-    <main>
-<?php
-}
-
-function generar_pie_pagina() {
-?>
-    </main>
-    <footer>
-        &copy; <?php echo date('Y'); ?> Servicios de Emergencia Cuautitlán. Todos los derechos reservados.
-    </footer>
-
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const timeOptions = {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false, 
-                timeZone: 'America/Mexico_City' 
-            };
-
-            const timeString = new Intl.DateTimeFormat('es-MX', timeOptions).format(now);
-            document.getElementById('current-time').textContent = timeString;
-        }
-
-        updateTime();
-        setInterval(updateTime, 1000);
-    </script>
-</body>
-</html>
-<?php
-}
-
-    <main>
+        </div>
+    </nav>
+    
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <div class="container-principal">
+            <!-- Aquí va el contenido específico de cada página -->

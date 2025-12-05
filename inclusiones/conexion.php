@@ -1,5 +1,5 @@
 <?php
-// inclusiones/conexion.php - USANDO TU CONEXIÓN QUE YA FUNCIONA
+// inclusiones/conexion.php
 
 class Database
 {
@@ -43,3 +43,4 @@ function limpiarDatos($data)
     $data = htmlspecialchars($data);
     return $data;
 }
+?>

@@ -1,14 +1,17 @@
 <?php
-date_default_timezone_set('America/Mexico_City'); 
+// inclusiones/config.php - VERSIÓN SIMPLE
+
+// Función para obtener ruta base (para archivos)
 function obtenerRutaBase() {
-    $nombre_proyecto = 'emergenciascuautitlan';
-    $uri = $_SERVER['REQUEST_URI'];
-    $pos = strpos($uri, $nombre_proyecto);
+    $script_path = $_SERVER['SCRIPT_NAME'];
+    $niveles = substr_count(dirname($script_path), '/');
     
-    if ($pos !== false) {
-        return substr($uri, 0, $pos + strlen($nombre_proyecto)) . '/';
+    if ($niveles == 0) {
+        return './';
     } else {
-        return '/'; 
+        return str_repeat('../', $niveles);
     }
 }
+
+// Otras configuraciones si las necesitas
 ?>
