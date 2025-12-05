@@ -1,0 +1,79 @@
+.titulo{
+    text-align: center;
+    font-family: 'Century Gothic', sans-serif;
+    padding: 15px;
+}
+.row{
+    text-align: center;
+    padding: 10px;
+}
+.btn-robo{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.btn-choque{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.btn-allanamiento{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.btn-orden{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.btn-eventos{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.btn-detenidos{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.btn-muertes{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 230px;
+    height: 60px;
+    border-radius: 15px;
+}
+.incidencias{
+    font-family: 'Century Gothic', sans-serif;
+    font-weight: bolder;
+    padding: 50px;
+}
+.form-container{
+    font-family: 'Century Gothic', sans-serif;
+    font-weight: normal;
+    padding-top: 20px;
+    padding-left: 50px;
+}
+textarea{
+    height: 300px;
+}
