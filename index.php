@@ -305,6 +305,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="col-md-6">
                     <h5>Central de Emergencias Cuautitlán</h5>
                     <p class="text-muted">Sistema de reporte en línea 24 horas</p>
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTXpyqHyavrRxuKiGeZIB_eP8rnfwnkCIRx-8XCfsLZT2xNG1caOMi0fHU1zRxSNsTjQs598ZP2g5Y7/pub"
+                        target="_blank"
+                        class="btn btn-outline-light btn-sm mt-2">
+                        <i class="fas fa-book me-1"></i> Documentación del Sistema
+                    </a>
                 </div>
                 <div class="col-md-6 text-end">
                     <p class="mb-0">
