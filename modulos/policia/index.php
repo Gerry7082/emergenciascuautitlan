@@ -9,6 +9,25 @@ if (!tienePermiso('policia') && !tienePermiso('admin')) {
 include '../../inclusiones/encabezado.php';
 ?>
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    $nombre = $_POST['nombre'];
+    $edad = $_POST['edad'];
+    $evento = $_POST['evento'];
+    $lugar = $_POST['lugar'];
+    $correo = $_POST['correo'];
+    $telefono = $_POST['telefono'];
+    $direccion = $_POST['direccion'];
+    $descripcion = $_POST['descripcion'];
+
+    $sql = "INSERT INTO tblpolicias (NombreVictima, EdadVictima, Evento, LugarEvento, Correo, NumeroTelEmergencia, DireccionVictima, DescripcionEvento)
+            VALUES ('$nombre', '$edad', '$evento', '$lugar', '$correo', '$telefono', '$direccion', '$descripcion')";
+
+    $conn->query($sql);
+
+    $consulta = $conn->query("SELECT * FROM tblpolicias");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -63,21 +82,21 @@ include '../../inclusiones/encabezado.php';
 
     
 
-    <form action="" class="incidencias">
+    <form action="" method="POST" class="incidencias">
         <legend>Gestión de Incidentes</legend>
             <div class="form-container">
                 <div class="row">
                     <div class="col-6">
                         <label for="exampleFormControlInput1" class="form-label">Nombre Completo Víctima</label>
-                        <input type="text" class="form-control nomVic" id="exampleFormControlInput1"/>
+                        <input type="text" class="form-control nomVic" id="exampleFormControlInput1" name="nombre" required/>
                     </div>
                     <div class="col-2">
                         <label for="exampleFormControlInput2" class="form-label">Edad Víctima</label>
-                        <input type="number" class="form-control" id="exampleFormControlInput2"/>
+                        <input type="number" class="form-control" id="exampleFormControlInput2" name="edad" required/>
                     </div>
                     <div class="col-4">
                         <label for="exampleFormControlInput3" class="form-label">Evento</label>
-                        <select class="form-control" id="exampleFormControlInput3">
+                        <select class="form-control" id="exampleFormControlInput3" name="evento" required>
                             <option value="">Selecciona una opción..</option>
                             <option value="Robo">Robo/Asalto</option>
                             <option value="Choque">Choque</option>
@@ -92,45 +111,61 @@ include '../../inclusiones/encabezado.php';
                 <div class="row">
                     <div class="col-6">
                         <label for="exampleFormControlInput4" class="form-label">Lugar de los hechos</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput4"/>
+                        <input type="text" class="form-control" id="exampleFormControlInput4" name="hechos" required/>
                     </div>
                     <div class="col-6">
                         <label for="exampleFormControlInput5" class="form-label">Correo electrónico</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput5"/>
+                        <input type="text" class="form-control" id="exampleFormControlInput5" name="correo" required/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <label for="exampleFormControlInput6" class="form-label">Número telefónico para emergencias</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput6"/>
+                        <input type="text" class="form-control" id="exampleFormControlInput6" name="numero" required/>
                     </div>
                     <div class="col-6">
                         <label for="exampleFormControlInput7" class="form-label">Dirección de la víctima</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput7"/>
+                        <input type="text" class="form-control" id="exampleFormControlInput7" name="direccion" required/>
                     </div>
                 </div>
                 <div class="row">
                     <label for="exampleFormControlInput8" class="form-label">Descripción de los hechos</label>
-                    <textarea class="form-control" id="exampleFormControlInput8"></textarea>
+                    <textarea class="form-control" id="exampleFormControlInput8" name="descripcion" required></textarea>
                 </div>
+                    <button class="btn btn-primary mt-3">Guardar reporte</button>
             </div>
     </form>
-<?php
-    echo "<table>";
-    echo "<thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre completo</th>
-                <th>Edad</th>
-                <th>Evento</th>
-                <th>Lugar de los hechos</th>
-                <th>Correo electrónico</th>
-                <th>Número para emergencias</th>
-                <th>Dirección</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>";
-?>
+
+    <table class="table table-bordered table-striped mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Evento</th>
+            <th>Lugar</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+        <tbody>
+            <?php while($fila = $consulta->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $fila['Id'] ?></td>
+                    <td><?= $fila['NombreVictima'] ?></td>
+                    <td><?= $fila['EdadVictima'] ?></td>
+                    <td><?= $fila['Evento'] ?></td>
+                    <td><?= $fila['LugarEvento'] ?></td>
+                    <td><?= $fila['Correo'] ?></td>
+                    <td><?= $fila['NumeroTelEmergencia'] ?></td>
+                    <td><?= $fila['DireccionVictima'] ?></td>
+                    <td><?= $fila['DescripcionEvento'] ?></td>
+                </tr>
+                <?php endwhile; ?>
+        </tbody>
+    </table>
 </body>
 </html>
 
