@@ -138,7 +138,7 @@ $conexion->close();
                                         <h6 class="card-title mb-3">
                                             <i class="fas fa-fire-extinguisher"></i> Equipo en Acción
                                         </h6>
-                                        <img src="https://images.unsplash.com/photo-1636483392196-f6e81d0979bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                        <img src="srcs/bomberos1.jpg"
                                             class="img-fluid rounded shadow-sm"
                                             alt="Bomberos en acción"
                                             style="height: 200px; object-fit: cover; width: 100%;">
@@ -156,7 +156,7 @@ $conexion->close();
                                         <h6 class="card-title mb-3">
                                             <i class="fas fa-truck"></i> Unidades de Respuesta
                                         </h6>
-                                        <img src="https://images.unsplash.com/photo-1576241836269-8ce9e4b8c7c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                        <img src="srcs/bomberos2.jpg"
                                             class="img-fluid rounded shadow-sm"
                                             alt="Unidades de bomberos"
                                             style="height: 200px; object-fit: cover; width: 100%;">
@@ -176,7 +176,7 @@ $conexion->close();
                                         </h6>
                                         <div class="ratio ratio-16x9">
                                             <iframe
-                                                src="https://www.youtube.com/watch?v=doI5J-ZXXmQ"
+                                                src="srcs/bomberos3.mp4"
                                                 title="Video informativo de bomberos"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen

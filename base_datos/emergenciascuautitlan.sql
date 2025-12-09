@@ -24,9 +24,7 @@ CREATE TABLE tblcentral (
 CREATE TABLE tblbomberos (
     Id INT(5) AUTO_INCREMENT PRIMARY KEY,
     IdCentral INT(5) NULL,
-    -- CAMBIO: ahora puede ser NULL
     Origen ENUM('central', 'directo') DEFAULT 'directo',
-    -- NUEVO: para rastrear origen
     NombreVictima VARCHAR(100) NOT NULL,
     EdadVictima INT(2) NOT NULL,
     Evento VARCHAR(60) NOT NULL,
@@ -43,9 +41,7 @@ CREATE TABLE tblbomberos (
 CREATE TABLE tblpolicias (
     Id INT(5) AUTO_INCREMENT PRIMARY KEY,
     IdCentral INT(5) NULL,
-    -- CAMBIO: ahora puede ser NULL
     Origen ENUM('central', 'directo') DEFAULT 'directo',
-    -- NUEVO: para rastrear origen
     NombreVictima VARCHAR(100) NOT NULL,
     EdadVictima INT(2) NOT NULL,
     Evento VARCHAR(60) NOT NULL,
@@ -62,9 +58,7 @@ CREATE TABLE tblpolicias (
 CREATE TABLE tblmedico (
     Id INT(5) AUTO_INCREMENT PRIMARY KEY,
     IdCentral INT(5) NULL,
-    -- CAMBIO: ahora puede ser NULL
     Origen ENUM('central', 'directo') DEFAULT 'directo',
-    -- NUEVO: para rastrear origen
     NombreVictima VARCHAR(100) NOT NULL,
     EdadVictima INT(2) NOT NULL,
     Evento VARCHAR(60) NOT NULL,
